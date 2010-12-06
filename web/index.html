@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<ul id="log">
+</ul>
+<script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+<script src="http://cdn.socket.io/stable/socket.io.js"></script>
+<script>
+$(document).ready(function(){
+    var socket = new io.Socket('localhost', {
+      port: 8080,
+      transports: ['websocket']
+    });
+    socket.on('connect', function(){
+      console.log('connect!');
+    })
+    socket.on('message', function(data){ 
+      console.log('message: ' + data);
+      $('<li>'+data+'</li>').appendTo($('log'));
+    })
+    socket.on('disconnect', function(){
+      console.log('disconnect');
+    });
+    socket.connect();
+    socket.send('hello');
+});
+</script>
+</body>
+</html>
